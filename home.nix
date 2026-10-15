@@ -8,6 +8,7 @@ let
 		kitty = "kitty";
 		# rofi = "rofi";
 	};
+	fogwm = pkgs.callPackage ./config/fogwm/package.nix { };
 in
 
 {
@@ -27,7 +28,7 @@ in
 		'';
 	};
 
-	home.file.".xinitrc".text = "exec dwm";
+	home.file.".xinitrc".text = "exec ${fogwm}/bin/fogwm";
 
 	xdg.configFile = builtins.mapAttrs (name: subpath: {
 		source = create_symlink "${dotfiles}/${subpath}";

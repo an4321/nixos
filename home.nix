@@ -6,7 +6,7 @@ let
 	configs = {
 		nvim = "nvim";
 		kitty = "kitty";
-		rofi = "rofi";
+		# rofi = "rofi";
 	};
 in
 
@@ -37,10 +37,10 @@ in
 	home.packages = with pkgs; [
 		neovim
 		kitty
-		ripgrep
-		rofi
-		nodejs
-		firefox
-		lazygit
+		# ripgrep
+		# rofi
+		# nodejs
+		# firefox
+		# lazygit
 	];
 }

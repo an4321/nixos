@@ -49,7 +49,7 @@
 
 	services.getty.autologinUser = "user";
 
-	environment.systemPackages = with pkgs; [ wget git tmux neovim fzf fastfetch xinit ];
+	environment.systemPackages = with pkgs; [ wget git tmux fzf fastfetch xinit ];
 
 	fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 

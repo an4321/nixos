@@ -39,6 +39,13 @@
 		autoRepeatDelay = 200;
 		autoRepeatInterval = 35;
 
+		displayManager = {
+			gdm.enable = false;
+			lightdm.enable = false;
+			sddm.enable = false;
+			startx.enable = true;
+		};
+
 		windowManager.dwm = {
 			enable = true;
 			package = pkgs.dwm.overrideAttrs {

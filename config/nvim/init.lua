@@ -1,0 +1,93 @@
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.confirm = true
+vim.opt.list = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.undofile = true
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.scrolloff = 20
+vim.opt.history = 10000
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.inccommand = 'split'
+vim.opt.signcolumn = 'yes'
+vim.opt.winborder = 'rounded'
+vim.opt.nrformats = vim.opt.nrformats + { 'unsigned' }
+vim.schedule(function() vim.opt.clipboard = 'unnamedplus' end)
+-- vim.opt.shell = '/usr/bin/env fish'
+vim.cmd.colorscheme 'term'
+
+-- highlight on yank
+vim.cmd [[ au TextYankPost * lua vim.hl.hl_op() ]]
+-- reopen at last position
+vim.cmd [[ au BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif ]]
+-- terminal start in insert mode & disable spellcheck
+vim.cmd [[ au TermOpen * setlocal nospell | startinsert ]]
+
+-- statusline
+vim.opt.cmdheight = 0
+vim.opt.laststatus = 3
+require('vim._core.ui2').enable({ msg = { targets = 'msg' } })
+function recording_status()
+	return vim.fn.reg_recording() ~= '' and 'recording @' .. vim.fn.reg_recording() or ''
+end
+vim.opt.statusline = '%#StatusLine#  %f %h%w%m%r %{%v:lua.recording_status()%} %=%l,%c %p%% '
+
+-- packages
+vim.pack.add({
+	'https://github.com/ibhagwan/fzf-lua',
+	'https://github.com/lewis6991/gitsigns.nvim',
+	'https://github.com/neovim/nvim-lspconfig',
+	'https://github.com/mason-org/mason.nvim',
+	'https://github.com/mason-org/mason-lspconfig.nvim',
+	-- 'https://github.com/romus204/tree-sitter-manager.nvim',
+	'https://github.com/saghen/blink.lib',
+	'https://github.com/saghen/blink.cmp',
+})
+
+require('fm').setup()
+vim.schedule(function()
+	require('gitsigns')
+	require('mason').setup()
+	require('mason-lspconfig').setup()
+	-- require('tree-sitter-manager').setup({ auto_install = true })
+	require('blink.cmp').setup({ fuzzy = { implementation = 'lua' }})
+	vim.lsp.config('*', { capabilities = require('blink.cmp').get_lsp_capabilities() })
+end)
+
+vim.keymap.set('n', '<space>a', '<cmd>FzfLua files<cr>')
+vim.keymap.set('n', '<space>g', '<cmd>FzfLua live_grep<cr>')
+vim.keymap.set('n', '<space><tab>', '<cmd>Gitsigns preview_hunk<cr>')
+vim.keymap.set('n', '[g', '<cmd>Gitsigns prev_hunk<cr>')
+vim.keymap.set('n', ']g', '<cmd>Gitsigns next_hunk<cr>')
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+vim.keymap.set('n', 'gq', function() vim.lsp.buf.format({ async = true }) end)
+vim.keymap.set('n', '<space>d', function() vim.diagnostic.jump({ count = 1, float = true }) end)
+
+for _, i in ipairs({ '()', '[]', '{}', '""', '``' }) do
+	vim.keymap.set('i', i:sub(1,1), i .. '<left>')
+end
+vim.keymap.set({'n', 'v', 'i'}, '<c-q>', function()
+	vim.cmd((#vim.fn.getbufinfo({ buflisted = 1 }) == 1) and 'q' or 'bd')
+end)
+vim.keymap.set({'n', 'v', 'i'}, '<c-s>', '<cmd>update<cr>')
+vim.keymap.set('n', '<c-h>', '<cmd>bp<cr>')
+vim.keymap.set('n', '<c-l>', '<cmd>bn<cr>')
+vim.keymap.set('n', '<esc>', '<cmd>nohls<cr>')
+vim.keymap.set('n', 'U', '<c-r>')
+vim.keymap.set({ 'n', 'v' }, 'L', '$')
+vim.keymap.set({ 'n', 'v' }, 'H', '^')
+vim.keymap.set({ 'i', 'c' }, '<c-bs>', '<c-w>')
+vim.keymap.set({ 'i', 'c' }, '<c-h>', '<c-w>')
+vim.keymap.set('v', '<tab>', '>gv')
+vim.keymap.set('v', '<s-tab>', '<gv')
+vim.keymap.set('n', '<bs>', ':term ')
+vim.keymap.set('t', '<c-w>', [[<c-\><c-n>]])
+vim.keymap.set('n', 's', '1z=')
+vim.keymap.set('n', '<space>s', '<cmd>set spell!<cr>')
+vim.keymap.set('n', '<space>w', '<cmd>set wrap!<cr>')
+vim.keymap.set('n', '<space>r', [[:%s/\<<c-r><c-w>\>/<c-r><c-w>/gI<Left><Left><Left>]])

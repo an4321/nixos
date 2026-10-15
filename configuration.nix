@@ -34,17 +34,17 @@
 		};
 	};
 
-	services.xserver.windowManager.dwm = {
-		enable = true;
-		package = pkgs.dwm.overrideAttrs {
-			src = ./config/dwm;
-		};
-	};
-	
 	services.xserver = {
 		enable = true;
 		autoRepeatDelay = 200;
 		autoRepeatInterval = 35;
+
+		windowManager.dwm = {
+			enable = true;
+			package = pkgs.dwm.overrideAttrs {
+				src = ./config/dwm;
+			};
+		};
 	};
 
 	services.getty.autologinUser = "user";

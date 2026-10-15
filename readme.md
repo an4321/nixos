@@ -7,5 +7,5 @@
 nixos (flakes & home-manager) + fogwm (odin) + kitty
 
 ```fish
-sudo nixos-rebuild switch --flake ~/nixos#nix
+sudo nixos-rebuild switch --flake ~/nixos#nix --impure
 ```

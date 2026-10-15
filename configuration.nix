@@ -25,7 +25,7 @@
 		layout = "us";
 	};
 
-	services.xserver.libinput = {
+	services.libinput = {
 		enable = true;
 		mouse.naturalScrolling = true;
 		touchpad = {
@@ -49,7 +49,7 @@
 
 	services.getty.autologinUser = "user";
 
-	environment.systemPackages = with pkgs; [ wget git tmux neovim fzf fastfetch xorg.xinit ];
+	environment.systemPackages = with pkgs; [ wget git tmux neovim fzf fastfetch xinit ];
 
 	fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 

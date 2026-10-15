@@ -25,8 +25,14 @@
 		layout = "us";
 	};
 
-	# services.xserver.enable = true;
-	# services.displayManager.startx.enable = true;
+	services.xserver.libinput = {
+		enable = true;
+		mouse.naturalScrolling = true;
+		touchpad = {
+			naturalScrolling = true;
+			tapping = true;
+		};
+	};
 
 	services.xserver.windowManager.dwm = {
 		enable = true;
@@ -41,11 +47,12 @@
 		autoRepeatInterval = 35;
 	};
 
-	environment.systemPackages = with pkgs; [ wget git tmux neovim fzf fastfetch ];
+	services.getty.autologinUser = "user";
+
+	environment.systemPackages = with pkgs; [ wget git tmux neovim fzf fastfetch xorg.xinit ];
 
 	fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 	system.stateVersion = "26.05";
 }
-

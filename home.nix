@@ -20,7 +20,14 @@ in
 		initExtra = ''
 			export PS1="\[\e[38;5;75m\]\u@\h \[\e[38;5;113m\]\w \[\e[38;5;189m\]\$ \[\e[0m\]"
 		'';
+		profileExtra = ''
+			if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+				exec startx
+			fi
+		'';
 	};
+
+	home.file.".xinitrc".text = "exec dwm";
 
 	xdg.configFile = builtins.mapAttrs (name: subpath: {
 		source = create_symlink "${dotfiles}/${subpath}";
@@ -34,7 +41,6 @@ in
 		rofi
 		nodejs
 		firefox
-		# opencode
 		lazygit
 	];
 }
